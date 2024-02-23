@@ -28,7 +28,7 @@ const findPositiveInt = (string) => {
     }
   }
   if (positiveInt === '') {
-    positiveInt = NaN;
+    return NaN;
   }
   return parseInt(positiveInt, 10);
 };
