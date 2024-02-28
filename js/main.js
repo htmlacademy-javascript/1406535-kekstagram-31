@@ -66,5 +66,6 @@ const createPhoto = (index) => ({
   comments: Array.from({length: getRandomInt(comments.MIN, comments.MAX)}, createComment)
 });
 
-// const photos = Array.from({length: PHOTOS_NUMBER}, (_, index) => createPhoto(index));
-Array.from({length: PHOTOS_NUMBER}, (_, index) => createPhoto(index));
+const createPhotos = (number) => Array.from({length: number}, (_, index) => createPhoto(index));
+
+createPhotos(PHOTOS_NUMBER);
