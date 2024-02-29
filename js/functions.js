@@ -44,7 +44,7 @@ findPositiveInt(1.5); // 15
 
 const convertToDayMinutes = (string) => {
   const temp = string.split(':');
-  return Number(temp[0] * 60) + Number(temp[1]);
+  return (parseInt(temp[0], 10) * 60 + parseInt(temp[1], 10));
 };
 
 const checkTime = (time1, time2, time3, time4) => {
