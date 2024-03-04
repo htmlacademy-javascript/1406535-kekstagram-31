@@ -14,8 +14,8 @@ const createThumb = (photo) => {
 
 const renderThumbs = (photos) => {
   const fragment = new DocumentFragment();
-  photos.forEach((photo) => fragment.appendChild(createThumb(photo)));
-  thumbsContainer.appendChild(fragment);
+  photos.forEach((photo) => fragment.append(createThumb(photo)));
+  thumbsContainer.append(fragment);
 };
 
 export {renderThumbs};
