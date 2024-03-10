@@ -13,6 +13,12 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
+const onDocumentClick = (evt) => {
+  if (evt.target.classList.contains('overlay')) {
+    closePhotoModal();
+  }
+};
+
 modalCloseButton.addEventListener('click', () => {
   closePhotoModal();
 });
@@ -69,6 +75,7 @@ const onLoadMoreButtonClick = () => {
 function openPhotoModal (photo) {
   modalBox.classList.remove('hidden');
   document.addEventListener('keydown', onDocumentKeydown);
+  document.addEventListener('click', onDocumentClick);
   document.body.classList.add('modal-open');
   renderContent(photo);
   loadMoreButton.addEventListener('click', onLoadMoreButtonClick);
@@ -77,6 +84,7 @@ function openPhotoModal (photo) {
 function closePhotoModal () {
   modalBox.classList.add('hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
+  document.removeEventListener('click', onDocumentClick);
   document.body.classList.remove('modal-open');
   loadMoreButton.removeEventListener('click', onLoadMoreButtonClick);
 }
