@@ -1,10 +1,11 @@
 const modalBox = document.querySelector('.big-picture');
 const modalCloseButton = document.querySelector('#picture-cancel');
-const commentShownCount = modalBox.querySelector('.social__comment-shown-count');
+const commentShownCountElem = modalBox.querySelector('.social__comment-shown-count');
 const commentsBox = modalBox.querySelector('.social__comments');
 const loadMoreButton = modalBox.querySelector('.comments-loader');
 const COMMENTS_STEP = 5;
 let comments = [];
+let commentShownCount;
 
 const onDocumentKeydown = (evt) => {
   if (evt.key === 'Escape') {
@@ -23,27 +24,31 @@ modalCloseButton.addEventListener('click', () => {
   closePhotoModal();
 });
 
-const renderLotComments = (startIndex = 0, quantity = COMMENTS_STEP) => {
-  const fragment = new DocumentFragment();
-  let lastIndex = startIndex;
+const updateCommentCount = () => {
+  commentShownCountElem.textContent = commentShownCount;
+};
 
-  for (let i = startIndex; i < Math.min(startIndex + quantity, comments.length); i++) {
+const renderLotComments = () => {
+  const fragment = new DocumentFragment();
+
+  let i = commentShownCount;
+  for (i; i < Math.min(commentShownCount + COMMENTS_STEP, comments.length); i++) {
     const comment = document.createElement('li');
     comment.classList.add('social__comment');
     comment.innerHTML = `<img class="social__picture" src="${comments[i].avatar}" alt="${comments[i].name}" width="35" height="35">
     <p class="social__text">${comments[i].message}</p>`;
 
     fragment.append(comment);
-    lastIndex = i + 1;
   }
+  commentShownCount = i;
+  updateCommentCount();
 
-  if (lastIndex === comments.length) {
+  if (commentShownCount === comments.length) {
     loadMoreButton.classList.add('hidden');
   } else {
     loadMoreButton.classList.remove('hidden');
   }
 
-  commentShownCount.textContent = lastIndex;
   commentsBox.append(fragment);
 };
 
@@ -58,18 +63,18 @@ const renderContent = (photo) => {
   // Блоки social__comment-count и social__comments
   commentsBox.innerHTML = '';
   modalBox.querySelector('.social__comment-total-count').textContent = comments.length;
+  commentShownCount = 0;
+  updateCommentCount();
 
   if (comments.length !== 0) {
     renderLotComments();
   } else {
-    commentShownCount.textContent = 0;
     loadMoreButton.classList.add('hidden');
   }
 };
 
 const onLoadMoreButtonClick = () => {
-  const startIndex = parseInt(commentShownCount.textContent, 10);
-  renderLotComments(startIndex);
+  renderLotComments();
 };
 
 function openPhotoModal (photo) {
