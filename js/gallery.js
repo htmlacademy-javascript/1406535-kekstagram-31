@@ -16,6 +16,7 @@ renderThumbs(photos);
 thumbsBox.addEventListener('click', (evt) => {
   const thumbUrl = evt.target.closest('a')?.dataset.origin;
   if (thumbUrl) {
-    openPhotoModal(photos.find((photo) => photo.url === thumbUrl));
+    const targetPhoto = photos.find((photo) => photo.url === thumbUrl);
+    openPhotoModal(targetPhoto);
   }
 });
