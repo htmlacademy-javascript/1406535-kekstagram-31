@@ -1,31 +1,21 @@
+import {operateModalBox} from './operate-modal-box.js';
+
 const modalBox = document.querySelector('.big-picture');
-const modalCloseButton = document.querySelector('#picture-cancel');
-const commentShownCountElem = modalBox.querySelector('.social__comment-shown-count');
+const commentShownCountElement = modalBox.querySelector('.social__comment-shown-count');
 const commentsBox = modalBox.querySelector('.social__comments');
 const loadMoreButton = modalBox.querySelector('.comments-loader');
 const COMMENTS_STEP = 5;
 let comments = [];
 let commentShownCount;
 
-const onDocumentKeydown = (evt) => {
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
-    closePhotoModal();
-  }
-};
-
-const onDocumentClick = (evt) => {
-  if (evt.target.classList.contains('overlay')) {
-    closePhotoModal();
-  }
-};
-
-modalCloseButton.addEventListener('click', () => {
-  closePhotoModal();
-});
-
 const updateCommentCount = () => {
-  commentShownCountElem.textContent = commentShownCount;
+  commentShownCountElement.textContent = commentShownCount;
+
+  if (commentShownCount === comments.length) {
+    loadMoreButton.classList.add('hidden');
+  } else {
+    loadMoreButton.classList.remove('hidden');
+  }
 };
 
 const renderLotComments = () => {
@@ -40,16 +30,13 @@ const renderLotComments = () => {
 
     fragment.append(comment);
   }
-  commentShownCount = i;
-  updateCommentCount();
-
-  if (commentShownCount === comments.length) {
-    loadMoreButton.classList.add('hidden');
-  } else {
-    loadMoreButton.classList.remove('hidden');
-  }
-
   commentsBox.append(fragment);
+  commentShownCount = i;
+};
+
+const onLoadMoreButtonClick = () => {
+  renderLotComments();
+  updateCommentCount();
 };
 
 const renderContent = (photo) => {
@@ -68,29 +55,19 @@ const renderContent = (photo) => {
 
   if (comments.length !== 0) {
     renderLotComments();
-  } else {
-    loadMoreButton.classList.add('hidden');
+    updateCommentCount();
   }
 };
 
-const onLoadMoreButtonClick = () => {
-  renderLotComments();
-};
-
 function openPhotoModal (photo) {
-  modalBox.classList.remove('hidden');
-  document.addEventListener('keydown', onDocumentKeydown);
-  document.addEventListener('click', onDocumentClick);
-  document.body.classList.add('modal-open');
+  operateModalBox('open', '.big-picture', '.big-picture__cancel', closePhotoModal);
+  modalBox.scrollTo(0, 0);
   renderContent(photo);
   loadMoreButton.addEventListener('click', onLoadMoreButtonClick);
 }
 
 function closePhotoModal () {
-  modalBox.classList.add('hidden');
-  document.removeEventListener('keydown', onDocumentKeydown);
-  document.removeEventListener('click', onDocumentClick);
-  document.body.classList.remove('modal-open');
+  operateModalBox('close', '.big-picture');
   loadMoreButton.removeEventListener('click', onLoadMoreButtonClick);
 }
 

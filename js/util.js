@@ -18,4 +18,7 @@ const createRandomIdGenerator = (min, max) => {
     return currentValue;
   };
 };
-export {getRandomInt, getRandomArrayElement, createRandomIdGenerator};
+
+const checkOriginality = (array) => (new Set(array)).size === array.length;
+
+export {getRandomInt, getRandomArrayElement, createRandomIdGenerator, checkOriginality};
