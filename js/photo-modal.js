@@ -1,10 +1,12 @@
 import {operateModalBox} from './operate-modal-box.js';
 
+const COMMENTS_STEP = 5;
+
 const modalBox = document.querySelector('.big-picture');
 const commentShownCountElement = modalBox.querySelector('.social__comment-shown-count');
 const commentsBox = modalBox.querySelector('.social__comments');
 const loadMoreButton = modalBox.querySelector('.comments-loader');
-const COMMENTS_STEP = 5;
+
 let comments = [];
 let commentShownCount;
 

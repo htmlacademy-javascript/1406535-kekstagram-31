@@ -4,8 +4,9 @@ const COMMENT_MAX_LENGTH = 140;
 const HASHTAGS_MAX_NUMBER = 5;
 
 const form = document.querySelector('#upload-select-image');
-const hashtagField = document.querySelector('[name="hashtags"]');
-const commentField = document.querySelector('[name="description"]');
+const hashtagField = form.querySelector('[name="hashtags"]');
+const commentField = form.querySelector('[name="description"]');
+
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -32,17 +33,17 @@ pristine
     },
     'Хэштеги повторяются');
 
-const checkValidity = (value) => {
-  if (value.length === 0) {
-    return true;
-  }
+pristine
+  .addValidator(hashtagField,
+    (value) => {
+      if (value.length === 0) {
+        return true;
+      }
 
-  const hashtags = value.split(' ');
-  const regexp = /^#[a-zа-яё0-9]{1,19}$/i;
-  return hashtags.every((hashtag) => regexp.test(hashtag));
-};
-
-pristine.addValidator(hashtagField, checkValidity, 'Введён невалидный хэштег');
+      const hashtags = value.split(' ');
+      const regexp = /^#[a-zа-яё0-9]{1,19}$/i;
+      return hashtags.every((hashtag) => regexp.test(hashtag));
+    }, 'Введён невалидный хэштег');
 
 function onFieldKeydown (evt) {
   evt.stopPropagation();

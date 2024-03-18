@@ -1,6 +1,6 @@
 const operateModalBox = (action, modalSelector, closeButtonSelector, cb, overlay = false) => {
   const modal = document.querySelector(modalSelector);
-  const closeButton = document.querySelector(closeButtonSelector);
+  const closeButton = modal.querySelector(closeButtonSelector);
 
   const onKeydown = (evt) => {
     if (evt.key === 'Escape') {
