@@ -7,7 +7,6 @@ const form = document.querySelector('#upload-select-image');
 const hashtagField = form.querySelector('[name="hashtags"]');
 const commentField = form.querySelector('[name="description"]');
 
-
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
@@ -61,6 +60,11 @@ form.addEventListener('submit', (evt) => {
   const isValid = pristine.validate();
   if (isValid) {
     form.submit();
-    form.reset();
   }
 });
+
+const resetValidator = () => {
+  pristine.reset();
+};
+
+export {resetValidator};
