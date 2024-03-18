@@ -13,8 +13,7 @@ const filterSliderBox = form.querySelector('.img-upload__effect-level');
 const filterSlider = form.querySelector('.effect-level__slider');
 const filterField = form.querySelector('.effect-level__value');
 
-let currentFilter = 'none';
-filterSliderBox.classList.add('hidden');
+let currentFilter;
 
 const applyFilter = (value) => {
   switch (currentFilter) {
@@ -35,8 +34,14 @@ const applyFilter = (value) => {
       break;
     case 'none':
     default:
+      filterSliderBox.classList.add('hidden');
       picture.style.filter = '';
   }
+};
+
+const resetFilter = () => {
+  currentFilter = 'none';
+  applyFilter();
 };
 
 noUiSlider.create(filterSlider, {
@@ -64,11 +69,12 @@ for (const control of controls) {
     currentFilter = control.value;
 
     if (currentFilter === 'none') {
-      filterSliderBox.classList.add('hidden');
-      picture.style.filter = '';
+      resetFilter();
     } else {
       filterSliderBox.classList.remove('hidden');
       filterSlider.noUiSlider.updateOptions(effects[currentFilter]);
     }
   });
 }
+
+export {resetFilter};
