@@ -1,14 +1,14 @@
 const effects = {
-  chrome: { range: { min: 0, max: 1, }, start: 0, step: 0.1, },
-  sepia: { range: { min: 0, max: 1, }, start: 0, step: 0.1, },
-  marvin: { range: { min: 0, max: 100, }, start: 0, step: 1, },
-  phobos: { range: { min: 0, max: 3, }, start: 0, step: 0.1, },
-  heat: { range: { min: 1, max: 3, }, start: 1, step: 0.1, },
+  chrome: { range: { min: 0, max: 1, }, start: 1, step: 0.1, },
+  sepia: { range: { min: 0, max: 1, }, start: 1, step: 0.1, },
+  marvin: { range: { min: 0, max: 100, }, start: 100, step: 1, },
+  phobos: { range: { min: 0, max: 3, }, start: 3, step: 0.1, },
+  heat: { range: { min: 1, max: 3, }, start: 3, step: 0.1, },
 };
 
 const form = document.querySelector('#upload-select-image');
 const picture = form.querySelector('.img-upload__preview img');
-const controls = form.querySelectorAll('.effects__list input[type="radio"]');
+const filterControl = form.querySelector('.effects');
 const filterSliderBox = form.querySelector('.img-upload__effect-level');
 const filterSlider = form.querySelector('.effect-level__slider');
 const filterField = form.querySelector('.effect-level__value');
@@ -49,7 +49,7 @@ noUiSlider.create(filterSlider, {
     min: 0,
     max: 1,
   },
-  start: 0,
+  start: 1,
   step: 0.1,
   connect: 'lower',
   format: {
@@ -64,17 +64,15 @@ filterSlider.noUiSlider.on('update', () => {
   applyFilter(newValue);
 });
 
-for (const control of controls) {
-  control.addEventListener('click', () => {
-    currentFilter = control.value;
+filterControl.addEventListener('change', (evt) => {
+  currentFilter = evt.target.value;
 
-    if (currentFilter === 'none') {
-      resetFilter();
-    } else {
-      filterSliderBox.classList.remove('hidden');
-      filterSlider.noUiSlider.updateOptions(effects[currentFilter]);
-    }
-  });
-}
+  if (currentFilter === 'none') {
+    resetFilter();
+  } else {
+    filterSliderBox.classList.remove('hidden');
+    filterSlider.noUiSlider.updateOptions(effects[currentFilter]);
+  }
+});
 
 export {resetFilter};

@@ -4,16 +4,9 @@ import {zoom} from './zoom.js';
 import {resetFilter} from './filters.js';
 
 const form = document.querySelector('#upload-select-image');
-const control = form.querySelector('.img-upload__scale');
+const zoomControl = form.querySelector('.img-upload__scale');
 
-const clearForm = () => {
-  zoom.reset();
-  resetFilter();
-  resetValidator();
-  form.reset();
-};
-
-const onControlClick = (evt) => {
+const onZoomControlClick = (evt) => {
   if (evt.target.classList.contains('scale__control--smaller')) {
     zoom.out();
   }
@@ -25,14 +18,17 @@ const onControlClick = (evt) => {
 
 const openUploadModal = () => {
   operateModalBox('open', '.img-upload__overlay', '.img-upload__cancel', closeUploadModal);
-  clearForm();
-  control.addEventListener('click', onControlClick);
+  document.querySelector('.img-upload__overlay').scrollTo(0, 0);
+  zoom.reset();
+  resetFilter();
+  resetValidator();
+  form.reset();
+  zoomControl.addEventListener('click', onZoomControlClick);
 };
 
 function closeUploadModal () {
   operateModalBox('close', '.img-upload__overlay');
-  clearForm();
-  control.removeEventListener('click', onControlClick);
+  zoomControl.removeEventListener('click', onZoomControlClick);
 }
 
 export {openUploadModal};
