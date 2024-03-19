@@ -1,10 +1,12 @@
 import {operateModalBox} from './operate-modal-box.js';
 
+const COMMENTS_STEP = 5;
+
 const modalBox = document.querySelector('.big-picture');
 const commentShownCountElement = modalBox.querySelector('.social__comment-shown-count');
 const commentsBox = modalBox.querySelector('.social__comments');
 const loadMoreButton = modalBox.querySelector('.comments-loader');
-const COMMENTS_STEP = 5;
+
 let comments = [];
 let commentShownCount;
 
@@ -42,12 +44,10 @@ const onLoadMoreButtonClick = () => {
 const renderContent = (photo) => {
   comments = [...photo.comments];
 
-  // Блок social__header
   modalBox.querySelector('.big-picture__img img').src = photo.url;
   modalBox.querySelector('.social__caption').textContent = photo.description;
   modalBox.querySelector('.likes-count').textContent = photo.likes;
 
-  // Блоки social__comment-count и social__comments
   commentsBox.innerHTML = '';
   modalBox.querySelector('.social__comment-total-count').textContent = comments.length;
   commentShownCount = 0;
@@ -59,12 +59,12 @@ const renderContent = (photo) => {
   }
 };
 
-function openPhotoModal (photo) {
+const openPhotoModal = (photo) => {
   operateModalBox('open', '.big-picture', '.big-picture__cancel', closePhotoModal);
   modalBox.scrollTo(0, 0);
   renderContent(photo);
   loadMoreButton.addEventListener('click', onLoadMoreButtonClick);
-}
+};
 
 function closePhotoModal () {
   operateModalBox('close', '.big-picture');
