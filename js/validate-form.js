@@ -1,9 +1,12 @@
 import {checkOriginality} from './util.js';
+import {sendData} from './data.js';
+import {closeUploadModal} from './upload-modal.js';
 
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAGS_MAX_NUMBER = 5;
 
 const form = document.querySelector('#upload-select-image');
+const submitButton = form.querySelector('#upload-submit');
 const hashtagField = form.querySelector('[name="hashtags"]');
 const commentField = form.querySelector('[name="description"]');
 
@@ -54,17 +57,23 @@ function onFieldKeydown (evt) {
 hashtagField.addEventListener('keydown', onFieldKeydown);
 commentField.addEventListener('keydown', onFieldKeydown);
 
+const resetValidator = () => pristine.reset();
+
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
   const isValid = pristine.validate();
+
   if (isValid) {
-    form.submit();
+    submitButton.disabled = true;
+    submitButton.textContent = 'Отправляю...';
+
+    sendData(new FormData(evt.target), closeUploadModal)
+      .finally(() => {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Опубликовать';
+      });
   }
 });
-
-const resetValidator = () => {
-  pristine.reset();
-};
 
 export {resetValidator};
