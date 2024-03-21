@@ -1,5 +1,4 @@
-const template = document.querySelector('#picture').content;
-const thumbTemplate = template.querySelector('.picture');
+const thumbTemplate = document.querySelector('#picture').content.children[0];
 
 const createThumb = (photo) => {
   const thumb = thumbTemplate.cloneNode(true);
