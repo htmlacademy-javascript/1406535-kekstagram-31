@@ -1,52 +1,40 @@
-import {getRandomInt, getRandomArrayElement, createRandomIdGenerator} from './util.js';
+import {openPopup, closePopup} from './operate-modal-box.js';
 
-const NAMES = ['Виктория', 'Олег', 'Иван', 'Петр', 'Джеймс', 'Ольга', 'Катя', 'Виктор', 'Александр', 'Женя', 'Оливер', 'Ахмет', 'София', 'Ильяс', 'Гретта'];
+const TIMEOUT = 5000;
 
-const MESSAGES = [
-  'Всё отлично!',
-  'В целом всё неплохо. Но не всё.',
-  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
-  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
-];
+const getData = (cb) => {
+  fetch('https://31.javascript.htmlacademy.pro/kekstagram/data')
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error(`Возникла ошибка ${response.status} : ${response.statusText}`);
+    })
+    .then((data) => cb(data))
+    .catch(() => {
+      const errorMessage = document.querySelector('#data-error').content.children[0];
+      document.body.append(errorMessage);
 
-const DESCRIPTIONS = ['#природа', '#собаки', '#портрет', '#семья'];
-
-const PHOTOS_NUMBER = 25;
-
-const likes = {
-  MIN: 15,
-  MAX: 200
+      setTimeout(() => errorMessage.remove(), TIMEOUT);
+    });
 };
 
-const comments = {
-  MIN: 0,
-  MAX: 30
-};
+const sendData = (body, cb) => fetch('https://31.javascript.htmlacademy.pro/kekstagram', {
+  method: 'POST',
+  body: body,
+})
+  .then((response) => {
+    if (response.ok) {
+      openPopup('#success', '.success__button', () => {
+        closePopup('.success');
+        cb();
+      });
+    } else {
+      throw new Error(`Возникла ошибка ${response.status} : ${response.statusText}`);
+    }
+  })
+  .catch(() => {
+    openPopup('#error', '.error__button', () => closePopup('.error'));
+  });
 
-const idNumbers = {
-  MIN: 1,
-  MAX: PHOTOS_NUMBER * comments.MAX
-};
-
-const getPhotoId = createRandomIdGenerator(idNumbers.MIN, idNumbers.MAX);
-
-const createComment = () => ({
-  id: getPhotoId(),
-  avatar: `img/avatar-${getRandomInt(1, 6)}.svg`,
-  message: getRandomArrayElement(MESSAGES),
-  name: getRandomArrayElement(NAMES),
-});
-
-const createPhoto = (index) => ({
-  id: `${index + 1}`,
-  url: `photos/${index + 1}.jpg`,
-  description: getRandomArrayElement(DESCRIPTIONS),
-  likes: getRandomInt(likes.MIN, likes.MAX),
-  comments: Array.from({length: getRandomInt(comments.MIN, comments.MAX)}, createComment)
-});
-
-const createPhotos = () => Array.from({length: PHOTOS_NUMBER}, (_, index) => createPhoto(index));
-
-export {createPhotos};
+export {getData, sendData};

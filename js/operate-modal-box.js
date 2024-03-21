@@ -1,53 +1,68 @@
-const operateModalBox = (action, modalSelector, closeButtonSelector, cb, overlay = false) => {
+let isPopupOpen = false;
+
+const openModal = (modalSelector, closeButtonSelector, cb) => {
   const modal = document.querySelector(modalSelector);
   const closeButton = modal.querySelector(closeButtonSelector);
 
   const onKeydown = (evt) => {
+    if (evt.key === 'Escape' && !isPopupOpen) {
+      evt.preventDefault();
+      callback();
+    }
+  };
+
+  const onCloseButtonClick = () => callback();
+
+  function callback () {
+    cb();
+    document.removeEventListener('keydown', onKeydown);
+    closeButton.removeEventListener('click', onCloseButtonClick);
+  }
+
+  modal.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+
+  document.addEventListener('keydown', onKeydown);
+  closeButton.addEventListener('click', onCloseButtonClick);
+};
+
+const closeModal = (modalSelector) => {
+  document.querySelector(modalSelector).classList.add('hidden');
+  document.body.classList.remove('modal-open');
+};
+
+const openPopup = (popupSelector, closeButtonSelector, cb) => {
+  const popup = document.querySelector(popupSelector).content.children[0].cloneNode(true);
+  const closeButton = popup.querySelector(closeButtonSelector);
+
+  const onKeydown = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
-      cb();
-      removeListeners();
+      callback();
     }
   };
 
   const onClick = (evt) => {
-    if (evt.target.classList.contains('overlay')) {
-      cb();
-      removeListeners();
+    if (evt.target === popup || evt.target === closeButton) {
+      callback();
     }
   };
 
-  const onCloseButtonClick = () => {
+  function callback () {
     cb();
-    removeListeners();
-  };
-
-  function removeListeners () {
     document.removeEventListener('keydown', onKeydown);
-    closeButton.removeEventListener('click', onCloseButtonClick);
-
-    if (overlay) {
-      document.removeEventListener('click', onClick);
-    }
+    document.removeEventListener('click', onClick);
   }
 
-
-  if (action === 'open') {
-    modal.classList.remove('hidden');
-    document.body.classList.add('modal-open');
-
-    document.addEventListener('keydown', onKeydown);
-    closeButton.addEventListener('click', onCloseButtonClick);
-
-    if (overlay) {
-      document.addEventListener('click', onClick);
-    }
-  }
-
-  if (action === 'close') {
-    modal.classList.add('hidden');
-    document.body.classList.remove('modal-open');
-  }
+  document.body.append(popup);
+  document.addEventListener('keydown', onKeydown);
+  document.addEventListener('click', onClick);
+  isPopupOpen = true;
 };
 
-export {operateModalBox};
+const closePopup = (popupSelector) => {
+  document.querySelector(popupSelector).remove();
+  isPopupOpen = false;
+};
+
+export {openModal, closeModal, openPopup, closePopup};

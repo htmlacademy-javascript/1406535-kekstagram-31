@@ -1,4 +1,4 @@
-import {operateModalBox} from './operate-modal-box.js';
+import {openModal, closeModal} from './operate-modal-box.js';
 
 const COMMENTS_STEP = 5;
 
@@ -60,14 +60,14 @@ const renderContent = (photo) => {
 };
 
 const openPhotoModal = (photo) => {
-  operateModalBox('open', '.big-picture', '.big-picture__cancel', closePhotoModal);
-  modalBox.scrollTo(0, 0);
+  openModal('.big-picture', '.big-picture__cancel', closePhotoModal);
   renderContent(photo);
   loadMoreButton.addEventListener('click', onLoadMoreButtonClick);
 };
 
 function closePhotoModal () {
-  operateModalBox('close', '.big-picture');
+  modalBox.scrollTo(0, 0);
+  closeModal('.big-picture');
   loadMoreButton.removeEventListener('click', onLoadMoreButtonClick);
 }
 

@@ -1,4 +1,4 @@
-import {operateModalBox} from './operate-modal-box.js';
+import {openModal, closeModal} from './operate-modal-box.js';
 import {resetValidator} from './validate-form.js';
 import {zoom} from './zoom.js';
 import {resetFilter} from './filters.js';
@@ -17,18 +17,18 @@ const onZoomControlClick = (evt) => {
 };
 
 const openUploadModal = () => {
-  operateModalBox('open', '.img-upload__overlay', '.img-upload__cancel', closeUploadModal);
-  document.querySelector('.img-upload__overlay').scrollTo(0, 0);
-  zoom.reset();
-  resetFilter();
-  resetValidator();
-  form.reset();
+  openModal('.img-upload__overlay', '.img-upload__cancel', closeUploadModal);
   zoomControl.addEventListener('click', onZoomControlClick);
 };
 
 function closeUploadModal () {
-  operateModalBox('close', '.img-upload__overlay');
+  document.querySelector('.img-upload__overlay').scrollTo(0, 0);
+  closeModal('.img-upload__overlay');
+  zoom.reset();
+  resetFilter();
+  resetValidator();
+  form.reset();
   zoomControl.removeEventListener('click', onZoomControlClick);
 }
 
-export {openUploadModal};
+export {openUploadModal, closeUploadModal};
