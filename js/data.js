@@ -2,22 +2,19 @@ import {openPopup, closePopup} from './operate-modal-box.js';
 
 const TIMEOUT = 5000;
 
-const getData = (cb) => {
-  fetch('https://31.javascript.htmlacademy.pro/kekstagram/data')
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error(`Возникла ошибка ${response.status} : ${response.statusText}`);
-    })
-    .then((data) => cb(data))
-    .catch(() => {
-      const errorMessage = document.querySelector('#data-error').content.children[0];
-      document.body.append(errorMessage);
+const getData = () => fetch('https://31.javascript.htmlacademy.pro/kekstagram/data')
+  .then((response) => {
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error(`Возникла ошибка ${response.status} : ${response.statusText}`);
+  })
+  .catch(() => {
+    const errorMessage = document.querySelector('#data-error').content.children[0];
+    document.body.append(errorMessage);
 
-      setTimeout(() => errorMessage.remove(), TIMEOUT);
-    });
-};
+    setTimeout(() => errorMessage.remove(), TIMEOUT);
+  });
 
 const sendData = (body, cb) => fetch('https://31.javascript.htmlacademy.pro/kekstagram', {
   method: 'POST',

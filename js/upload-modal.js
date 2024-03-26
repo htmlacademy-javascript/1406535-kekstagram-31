@@ -1,9 +1,11 @@
 import {openModal, closeModal} from './operate-modal-box.js';
-import {resetValidator} from './validate-form.js';
+import {sendData} from './data.js';
+import {pristine} from './validate-form.js';
 import {zoom} from './zoom.js';
 import {resetFilter} from './filters.js';
 
 const form = document.querySelector('#upload-select-image');
+const submitButton = form.querySelector('#upload-submit');
 const zoomControl = form.querySelector('.img-upload__scale');
 
 const onZoomControlClick = (evt) => {
@@ -16,6 +18,23 @@ const onZoomControlClick = (evt) => {
   }
 };
 
+form.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+
+  const isValid = pristine.validate();
+
+  if (isValid) {
+    submitButton.disabled = true;
+    submitButton.textContent = 'Отправляю...';
+
+    sendData(new FormData(evt.target), closeUploadModal)
+      .finally(() => {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Опубликовать';
+      });
+  }
+});
+
 const openUploadModal = () => {
   openModal('.img-upload__overlay', '.img-upload__cancel', closeUploadModal);
   zoomControl.addEventListener('click', onZoomControlClick);
@@ -26,9 +45,9 @@ function closeUploadModal () {
   closeModal('.img-upload__overlay');
   zoom.reset();
   resetFilter();
-  resetValidator();
+  pristine.reset();
   form.reset();
   zoomControl.removeEventListener('click', onZoomControlClick);
 }
 
-export {openUploadModal, closeUploadModal};
+export {openUploadModal};
