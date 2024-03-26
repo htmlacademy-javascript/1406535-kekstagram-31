@@ -22,7 +22,7 @@ const createRandomIdGenerator = (min, max) => {
 const checkOriginality = (array) => (new Set(array)).size === array.length;
 
 const getRandomArray = (array, number = array.length) => {
-  const randomIndex = createRandomIdGenerator(0, array.length);
+  const randomIndex = createRandomIdGenerator(0, array.length - 1);
   const newArray = [];
 
   while (newArray.length < number) {

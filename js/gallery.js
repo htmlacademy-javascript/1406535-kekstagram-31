@@ -30,14 +30,24 @@ const setSortClick = (cb) => {
 
 const applySort = (photos) => {
   clearThumbs();
+
   const sortedPhotos = photos.slice().sort((a, b) => b.comments.length - a.comments.length);
   const randomPhotos = getRandomArray(photos, RANDOM_PHOTOS_NUMBER);
+  let selectedPhotos;
 
   const sortMethod = sortControl.querySelector('.img-filters__button--active').id.slice(7);
 
-  // eslint-disable-next-line no-nested-ternary
-  const selectedPhotos = (sortMethod === 'random') ? randomPhotos :
-    (sortMethod === 'discussed') ? sortedPhotos : photos;
+  switch (sortMethod) {
+    case 'random':
+      selectedPhotos = randomPhotos;
+      break;
+    case 'discussed':
+      selectedPhotos = sortedPhotos;
+      break;
+    case 'default':
+    default:
+      selectedPhotos = photos;
+  }
 
   renderThumbs(selectedPhotos);
 };
