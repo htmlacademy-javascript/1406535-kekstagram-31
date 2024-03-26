@@ -35,7 +35,8 @@ const applySort = (photos) => {
 
   const sortMethod = sortControl.querySelector('.img-filters__button--active').id.slice(7);
 
-  const selectedPhotos = (sortMethod === 'random') ?  randomPhotos :
+  // eslint-disable-next-line no-nested-ternary
+  const selectedPhotos = (sortMethod === 'random') ? randomPhotos :
     (sortMethod === 'discussed') ? sortedPhotos : photos;
 
   renderThumbs(selectedPhotos);
