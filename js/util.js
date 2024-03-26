@@ -21,4 +21,25 @@ const createRandomIdGenerator = (min, max) => {
 
 const checkOriginality = (array) => (new Set(array)).size === array.length;
 
-export {getRandomInt, getRandomArrayElement, createRandomIdGenerator, checkOriginality};
+const getRandomArray = (array, number = array.length) => {
+  const randomIndex = createRandomIdGenerator(0, array.length);
+  const newArray = [];
+
+  while (newArray.length < number) {
+    const index = randomIndex();
+    newArray.push(array[index]);
+  }
+
+  return newArray;
+};
+
+function debounce (callback, timeoutDelay = 500) {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+export {getRandomInt, getRandomArrayElement, createRandomIdGenerator, checkOriginality, getRandomArray, debounce};
