@@ -35,7 +35,7 @@ const applySort = (photos) => {
   const randomPhotos = getRandomArray(photos, RANDOM_PHOTOS_NUMBER);
   let selectedPhotos;
 
-  const sortMethod = sortControl.querySelector('.img-filters__button--active').id.slice(7);
+  const sortMethod = sortControl.querySelector('.img-filters__button--active').id.slice('filter-'.length);
 
   switch (sortMethod) {
     case 'random':
