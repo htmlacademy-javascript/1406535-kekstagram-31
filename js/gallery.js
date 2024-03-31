@@ -36,7 +36,6 @@ const applySort = (photos) => {
   let selectedPhotos;
 
   const sortMethod = sortControl.querySelector('.img-filters__button--active').id.slice('filter-'.length);
-
   switch (sortMethod) {
     case 'random':
       selectedPhotos = randomPhotos;

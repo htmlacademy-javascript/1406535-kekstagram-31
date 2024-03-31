@@ -13,8 +13,7 @@ const getData = (cb) => fetch(`${BASE_URL}/data`)
     setTimeout(() => errorMessage.remove(), TIMEOUT);
   });
 
-
-const sendData = (body, cb) => fetch(BASE_URL, { method: 'POST', body: body, })
+const sendData = (body, cb) => fetch(BASE_URL, { method: 'POST', body, })
   .then((response) => {
     if (response.ok) {
       cb();
