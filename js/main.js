@@ -11,8 +11,9 @@ document.querySelector('.img-upload__input').addEventListener('change', (evt) =>
   openUploadModal();
 });
 
-getData()
-  .then((photos) => {
-    initGallery(photos);
-    setSortClick(debounce(() => applySort(photos), RERENDER_DELAY));
-  });
+const onDataLoad = (photos) => {
+  initGallery(photos);
+  setSortClick(debounce(() => applySort(photos), RERENDER_DELAY));
+};
+
+getData(onDataLoad);

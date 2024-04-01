@@ -1,6 +1,7 @@
 import {checkOriginality} from './util.js';
 
 const REGEXP = /^#[a-zа-яё0-9]{1,19}$/i;
+const SPACES = /\s+/g;
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAGS_MAX_NUMBER = 5;
 
@@ -46,7 +47,14 @@ function onFieldKeydown (evt) {
   }
 }
 
+function onFieldBlur () {
+  this.value = this.value.replace(SPACES, ' ').trim();
+}
+
 hashtagField.addEventListener('keydown', onFieldKeydown);
+hashtagField.addEventListener('blur', onFieldBlur);
+
 commentField.addEventListener('keydown', onFieldKeydown);
+commentField.addEventListener('blur', onFieldBlur);
 
 export {pristine};

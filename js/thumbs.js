@@ -8,6 +8,7 @@ const createThumb = (photo) => {
   const thumbImg = thumb.querySelector('.picture__img');
   thumbImg.src = photo.url;
   thumbImg.alt = photo.description;
+
   thumb.querySelector('.picture__likes').textContent = photo.likes;
   thumb.querySelector('.picture__comments').textContent = photo.comments.length;
   return thumb;
