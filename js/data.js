@@ -1,9 +1,9 @@
 import {openPopup, closePopup} from './operate-modal-box.js';
 
-const BASE_URL = 'https://31.javascript.htmlacademy.pro/kekstagram';
+const BASE_URL = 'https://31.javascript.htmlacademy.pro/kekstagram/';
 const TIMEOUT = 5000;
 
-const getData = (cb) => fetch(`${BASE_URL}/data`)
+const getData = (cb) => fetch(`${BASE_URL}data`)
   .then((response) => response.json())
   .then((data) => cb(data))
   .catch(() => {
